@@ -4,13 +4,11 @@ from translator import main
 from io import BytesIO
 import shutil
 
-# ملفات النسخة الأصلية
 original_versions = {
     "تقرير شهر مايو.xlsx": "تقرير شهر مايو - أصلي.xlsx",
     "تصنيف مستفيدي السكن الداخلي في الأنشطة الترفيهية والاجتماعية.xlsx": "تصنيف مستفيدي السكن الداخلي في الأنشطة الترفيهية والاجتماعية - أصلي.xlsx"
 }
 
-# نسخ الملفات المؤقتة من الأصلية إذا أول تحميل
 if "initialized" not in st.session_state:
     for temp_file, original_file in original_versions.items():
         if os.path.exists(original_file):
@@ -20,13 +18,11 @@ if "initialized" not in st.session_state:
     st.session_state.initialized = True
 
 
-# ملفات Excel المطلوبة
 available_files = [
     ("تقرير شهر مايو.xlsx", "C", 7),
     ("تصنيف مستفيدي السكن الداخلي في الأنشطة الترفيهية والاجتماعية.xlsx", "F", 11)
 ]
 
-# تحميل محتوى ملف كـ BytesIO
 def load_file_bytes(file_path):
     with open(file_path, "rb") as f:
         return f.read()
@@ -39,16 +35,13 @@ if "conversation_history" not in st.session_state:
     st.session_state.conversation_history = []
 
 
-# 🗨️ عرض المحادثات السابقة
 for message in st.session_state.conversation_history:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# 📝 إدخال المستخدم
 user_input = st.chat_input("💬 أدخل الجملة (بالعربية، منظمة أو غير منظمة):")
 
 if user_input:
-    # عرض رسالة المستخدم
     with st.chat_message("user"):
         st.markdown(user_input)
 
@@ -57,10 +50,8 @@ if user_input:
         "content": user_input,
     })
 
-    # الرد من الذكاء الاصطناعي + حفظ البيانات
     ai_response = main(user_input)
 
-    # عرض رد الذكاء الاصطناعي
     with st.chat_message("assistant"):
         st.markdown(ai_response)
 
@@ -69,13 +60,11 @@ if user_input:
         "content": ai_response,
     })
     
-    # ✅ إعادة تحميل الأزرار المحدثة في الشريط الجانبي
     with st.sidebar:
         for file_name, _, _ in available_files:
             if os.path.exists(file_name):
                 file_bytes = load_file_bytes(file_name)
                 
-# 🟦 الشريط الجانبي
 with st.sidebar:
     st.markdown("### 📝 مساعد إدخال البيانات")
     st.markdown("الرجاء إدخال المعلومات المطلوبة بدقة.\nسيتم حفظها تلقائيًا في ملف Excel.")
