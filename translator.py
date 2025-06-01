@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+API_KEY="AIzaSyCY2HHgNb3458mAgpiEYtrsDeGRTOccJUA"
 # Initialize Gemini
 llm = ChatGoogleGenerativeAI(
     google_api_key=API_KEY,
