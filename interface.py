@@ -73,3 +73,4 @@ if user_input:
         "role": "assistant",
         "content": ai_response,
     })
+    st.rerun
