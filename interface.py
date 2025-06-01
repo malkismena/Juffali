@@ -5,6 +5,7 @@ from translator import main
 
 st.set_page_config(page_title="Munazzim Chatbot", layout="wide")
 
+# دالة التحقق من وجود بيانات (ممكن تستخدمها لاحقًا لو حبيت)
 def has_data(filepath, data_column="C", start_row=7):
     try:
         wb = load_workbook(filepath)
@@ -26,11 +27,11 @@ with st.sidebar:
     st.markdown("الرجاء إدخال المعلومات المطلوبة بدقة.\nسيتم حفظها تلقائيًا في ملف Excel.")
 
     st.markdown("---")
-    st.markdown("### 📂 تحميل الملفات التي تحتوي على بيانات:")
+    st.markdown("### 📂 تحميل الملفات:")
 
     found = False
     for file_name, col, start_row in available_files:
-        if os.path.exists(file_name) and has_data(file_name, col, start_row):
+        if os.path.exists(file_name):  # فقط تحقق من وجود الملف
             with open(file_name, "rb") as f:
                 st.download_button(
                     label=f"📥 تحميل {file_name}",
@@ -41,7 +42,7 @@ with st.sidebar:
             found = True
 
     if not found:
-        st.info("لا توجد ملفات تحتوي على بيانات حاليًا.")
+        st.info("لا توجد ملفات للتحميل حالياً.")
 
 st.markdown("<h1 style='text-align: center; color: #2c3e50;'>Munazzim Chatbot</h1>", unsafe_allow_html=True)
 
@@ -72,6 +73,3 @@ if user_input:
         "role": "assistant",
         "content": ai_response,
     })
-
-    #st.rerun()
-
